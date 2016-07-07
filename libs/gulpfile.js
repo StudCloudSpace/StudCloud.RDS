@@ -46,7 +46,7 @@ gulp.task('universities', function () {
 
 
 gulp.task('all', function(){
-	return gulp.src(['../library/subjects/index.js', '../library/university/index.js', '../library/workTypes/index.js'])
+	return gulp.src([ '../index.js', '../library/subjects/index.js', '../library/university/index.js', '../library/workTypes/index.js'])
 		.on('data', function(file){
 			console.log(file.path);
 		})

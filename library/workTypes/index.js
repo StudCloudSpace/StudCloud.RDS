@@ -440,4 +440,4 @@ function getTitle(){
 WorkType.methods.getTitle = getTitle;
 
 
-exports.WorkTypes = WorkType;
+module.exports = WorkType;

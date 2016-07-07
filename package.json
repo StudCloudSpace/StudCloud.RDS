@@ -1,6 +1,6 @@
 {
   "name": "@anzuev/studcloud.rds",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "RDS module for StudCloud Project",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,10 @@
   },
   "author": "AnZuev",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnZuev/StudCloud.RDS"
+  },
   "dependencies": {
     "@anzuev/studcloud.errors": "^0.2.0",
     "gulp": "^3.9.1",

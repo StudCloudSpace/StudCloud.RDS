@@ -53,7 +53,7 @@ var Faculty = new Schema({
  * @property {string} location.city - Город
  * @property {string} location.street - улица
  * @property {string} location.building - Номер дома
- * @rating {number} rating - рейтинг университета
+ * @property {number} rating - рейтинг университета
  * @property {date} created - дата создания
  * @property {date} updated - дата обновления
  * @property {boolean} enabled - Активен ли предмет?
@@ -99,7 +99,7 @@ var University = new Schema({
  * @function getTitle
  * @memberof module:RDS~University.prototype
  * @this {University}
- * Получение названия университета
+ * @summary Получение названия университета
  * @returns {string} - название
  */
 function getTitle(){
@@ -111,7 +111,7 @@ University.methods.getTitle = getTitle;
  * @function getTitle
  * @memberof module:RDS~Faculty.prototype
  * @this {Faculty}
- * Получение названия университета
+ * @summary Получение названия университета
  * @returns {string} - название
  */
 Faculty.methods.getTitle = getTitle;
@@ -122,7 +122,7 @@ Faculty.methods.getTitle = getTitle;
  * @function getShortTitle
  * @memberof module:RDS~University.prototype
  * @this {University}
- * Получение краткого названия университета
+ * @summary Получение краткого названия университета
  * @returns {string} - краткое название
  */
 function getShortTitle(){
@@ -134,7 +134,7 @@ University.methods.getShortTitle = getShortTitle;
  * @function getShortTitle
  * @memberof module:RDS~Faculty.prototype
  * @this {Faculty}
- * Получение краткого названия университета
+ * @summary Получение краткого названия университета
  * @returns {string} - краткое название
  */
 Faculty.methods.getShortTitle = getShortTitle;
@@ -143,7 +143,7 @@ Faculty.methods.getShortTitle = getShortTitle;
 /**
  * @memberof module:RDS~University
  * @this {University}
- * Получение университета по id
+ * @summary Получение университета по id
  * @param id - идентификатор типа
  * @returns {promise}
  * @fulfill {University} - все прошло хорошо
@@ -192,7 +192,7 @@ function formatForSearch(format){
  * @function formatForSearch
  * @memberof module:RDS~Faculty.prototype
  * @this {Faculty}
- * Метод для форматирования факультетов или университетов для выдачи
+ * @summary Метод для форматирования факультетов или университетов для выдачи
  * @param {boolean} format true - длинное(title), false - краткое(shortTitle)
  * @returns {object} formatted faculty
  */
@@ -201,7 +201,7 @@ Faculty.methods.formatForSearch = formatForSearch;
  * @function formatForSearch
  * @memberof module:RDS~University.prototype
  * @this {University}
- * Метод для форматирования факультетов или университетов для выдачи
+ * @summary Метод для форматирования факультетов или университетов для выдачи
  * @param {boolean} format true - длинное(title), false - краткое(shortTitle)
  * @returns {object} formatted University
  */
@@ -213,7 +213,7 @@ University.methods.formatForSearch = formatForSearch;
 /**
  * @this {University}
  * @memberof module:RDS~University
- * Метод для получения списка факультетов в рамках одного универа по id
+ * @summary Метод для получения списка факультетов в рамках одного универа по id
  * @param {string} university - id университета
  * @param {boolean} format, true - длинное(title), false - краткое(shortTitle)
  * @return {promise}
@@ -273,7 +273,7 @@ University.statics.getFaculties = getFaculties;
 /**
  * @this {University}
  * @memberof module:RDS~University
- * Метод для получения списка универов
+ * @summary Метод для получения списка универов
  * @param {boolean} format - true - длинное(title), false - краткое(shortTitle)
  * @return {promise}
  * @fulfill - Массив для выдачи
@@ -577,7 +577,7 @@ University.methods.addFaculty = addFaculty;
 /**
  * @this {University}
  * @memberof module:RDS~University.prototype
- * Безопасное сохранение университета
+ * @summary Безопасное сохранение университета
  * @returns {university}
  * @throws {DbError}, 500 - ошибка базы данных
  */

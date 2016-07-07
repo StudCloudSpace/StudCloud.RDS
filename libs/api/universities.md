@@ -12,8 +12,11 @@
             * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>string</code>
             * [.formatForSearch(format)](#module_RDS..University+formatForSearch) ⇒ <code>object</code>
             * [.addFaculty(title, shortTitle)](#module_RDS..University+addFaculty)
+            * [.saveUniversity()](#module_RDS..University+saveUniversity) ⇒ <code>university</code>
         * _static_
             * [.getById(id)](#module_RDS..University.getById) ⇒ <code>promise</code>
+            * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>promise</code>
+            * [.getUniversities(format)](#module_RDS..University.getUniversities) ⇒ <code>promise</code>
             * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>promise</code>
             * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>promise</code>
             * [.isExist(university, faculty)](#module_RDS..University.isExist) ⇒ <code>promise</code>
@@ -48,18 +51,21 @@
 
 #### faculty.getTitle() ⇒ <code>string</code>
 **Kind**: instance method of <code>[Faculty](#module_RDS..Faculty)</code>  
+**Summary**: Получение названия университета  
 **Returns**: <code>string</code> - - название  
 **this**: <code>{Faculty}</code>  
 <a name="module_RDS..Faculty+getShortTitle"></a>
 
 #### faculty.getShortTitle() ⇒ <code>string</code>
 **Kind**: instance method of <code>[Faculty](#module_RDS..Faculty)</code>  
+**Summary**: Получение краткого названия университета  
 **Returns**: <code>string</code> - - краткое название  
 **this**: <code>{Faculty}</code>  
 <a name="module_RDS..Faculty+formatForSearch"></a>
 
 #### faculty.formatForSearch(format) ⇒ <code>object</code>
 **Kind**: instance method of <code>[Faculty](#module_RDS..Faculty)</code>  
+**Summary**: Метод для форматирования факультетов или университетов для выдачи  
 **Returns**: <code>object</code> - formatted faculty  
 **this**: <code>{Faculty}</code>  
 
@@ -71,7 +77,6 @@
 
 ### RDS~University
 **Kind**: inner class of <code>[RDS](#module_RDS)</code>  
-**Rating**: <code>number</code> rating - рейтинг университета  
 **Properties**
 
 | Name | Type | Description |
@@ -82,6 +87,7 @@
 | location.city | <code>string</code> | Город |
 | location.street | <code>string</code> | улица |
 | location.building | <code>string</code> | Номер дома |
+| rating | <code>number</code> | рейтинг университета |
 | created | <code>date</code> | дата создания |
 | updated | <code>date</code> | дата обновления |
 | enabled | <code>boolean</code> | Активен ли предмет? |
@@ -94,8 +100,11 @@
         * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>string</code>
         * [.formatForSearch(format)](#module_RDS..University+formatForSearch) ⇒ <code>object</code>
         * [.addFaculty(title, shortTitle)](#module_RDS..University+addFaculty)
+        * [.saveUniversity()](#module_RDS..University+saveUniversity) ⇒ <code>university</code>
     * _static_
         * [.getById(id)](#module_RDS..University.getById) ⇒ <code>promise</code>
+        * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>promise</code>
+        * [.getUniversities(format)](#module_RDS..University.getUniversities) ⇒ <code>promise</code>
         * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>promise</code>
         * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>promise</code>
         * [.isExist(university, faculty)](#module_RDS..University.isExist) ⇒ <code>promise</code>
@@ -106,18 +115,21 @@
 
 #### university.getTitle() ⇒ <code>string</code>
 **Kind**: instance method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Получение названия университета  
 **Returns**: <code>string</code> - - название  
 **this**: <code>{University}</code>  
 <a name="module_RDS..University+getShortTitle"></a>
 
 #### university.getShortTitle() ⇒ <code>string</code>
 **Kind**: instance method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Получение краткого названия университета  
 **Returns**: <code>string</code> - - краткое название  
 **this**: <code>{University}</code>  
 <a name="module_RDS..University+formatForSearch"></a>
 
 #### university.formatForSearch(format) ⇒ <code>object</code>
 **Kind**: instance method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Метод для форматирования факультетов или университетов для выдачи  
 **Returns**: <code>object</code> - formatted University  
 **this**: <code>{University}</code>  
 
@@ -141,10 +153,21 @@
 | title | полное название |
 | shortTitle | краткое название |
 
+<a name="module_RDS..University+saveUniversity"></a>
+
+#### university.saveUniversity() ⇒ <code>university</code>
+**Kind**: instance method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Безопасное сохранение университета  
+**Throws**:
+
+- <code>DbError</code> , 500 - ошибка базы данных
+
+**this**: <code>{University}</code>  
 <a name="module_RDS..University.getById"></a>
 
 #### University.getById(id) ⇒ <code>promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Получение университета по id  
 **this**: <code>{University}</code>  
 **Fulfill**: <code>University</code> - все прошло хорошо  
 **Reject**: <code>DbError</code>, 404 - не найден тип по id  
@@ -153,6 +176,35 @@
 | Param | Description |
 | --- | --- |
 | id | идентификатор типа |
+
+<a name="module_RDS..University.getFaculties"></a>
+
+#### University.getFaculties(university, format,) ⇒ <code>promise</code>
+**Kind**: static method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Метод для получения списка факультетов в рамках одного универа по id  
+**this**: <code>{University}</code>  
+**Fulfill**: - Массив для выдачи  
+**Reject{dberror},**: 204 - не найдено факультетов  
+**Reject**: <code>DbError</code>, 500 - ошибка базы данных.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| university | <code>string</code> | id университета |
+| format, | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
+
+<a name="module_RDS..University.getUniversities"></a>
+
+#### University.getUniversities(format) ⇒ <code>promise</code>
+**Kind**: static method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Метод для получения списка универов  
+**this**: <code>{University}</code>  
+**Fulfill**: - Массив для выдачи  
+**Reject**: <code>DbError</code>, 204 - не найдено университетов  
+**Reject**: <code>DbError</code>, 500 - ошибка базы данных.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| format | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
 
 <a name="module_RDS..University.getUniversitiesByTitle"></a>
 
