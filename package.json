@@ -1,0 +1,21 @@
+{
+  "name": "@anzuev/studcloud.rds",
+  "version": "1.0.0",
+  "description": "RDS module for StudCloud Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AnZuev",
+  "license": "ISC",
+  "dependencies": {
+    "@anzuev/studcloud.errors": "^0.2.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-jsdoc-to-markdown": "^1.2.2",
+    "gulp-util": "^3.0.7",
+    "log4js": "^0.6.37",
+    "mongoose": "^4.5.3",
+    "q": "^1.4.1"
+  }
+}
