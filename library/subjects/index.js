@@ -7,7 +7,7 @@ const mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
 	Util = require('util'),
 	Q = require('q'),
-	logger = require('../../libs/logger');
+	logger = require('../../libs/logger').getLogger();
 
 const perPage = 10;
 
