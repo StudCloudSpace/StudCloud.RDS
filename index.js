@@ -5,10 +5,7 @@
 /**
  * @module RDS
  */
-
-const logger = require('./libs/logger'),
-	connection = require("./libs/connections").rds,
-	Mongoose = require("mongoose");
+let logger;
 
 
 const UniversityModel = require('./library/university'),
@@ -26,6 +23,30 @@ const ValidationError = require("@anzuev/studcloud.errors").ValidationError,
  */
 
 function RDS(){}
+
+/**
+ * Настройка модуля
+ * @throws {Error}, не смог подключиться к базе данных.
+ * @this {RDS}
+ */
+RDS.configure = function(config){
+	RDS._config = config;
+	require('./libs/connections').configure(config);
+	require('./libs/logger').configure(config);
+	logger = require("./libs/logger").getLogger();
+	let connection = require('./libs/connections').getConnections().rds;
+	if(!connection){
+		let err = new Error("No connection specified for 'university', 'faculty' and 'workType' collections");
+		logger.error(err);
+		throw err;
+	}else{
+		RDS._University = connection.model("University", UniversityModel);
+		RDS._WorkType = connection.model('WorkType', WorkTypeModel);
+		RDS._Subject = connection.model('Subject', Subject);
+	}
+	logger.info("RDS has been successfully configured and started");
+
+};
 
 /**
  *
@@ -88,25 +109,8 @@ RDS.getSubjectModel = function(){
 	return RDS._Subject;
 };
 
-/**
- * Инициализация модуля
- * @throws {Error}, не смог подключиться к базе данных.
- * @private
- */
-RDS.init = function(){
-	if(!connection){
-		let err = new Error("No connection specified for 'university', 'faculty' and 'workType' collections");
-		logger.error(err);
-		throw err;
-	}else{
-		RDS._University = connection.model("University", UniversityModel);
-		RDS._WorkType = connection.model('WorkType', WorkTypeModel);
-		RDS._Subject = connection.model('Subject', Subject);
 
-	}
-};
 
-RDS.init();
 
 module.exports = RDS;
 

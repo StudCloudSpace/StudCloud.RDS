@@ -1,18 +1,22 @@
-/**
- * Created by anton on 06/07/16.
- */
 'use strict';
 
-let log4js = require('log4js'),
-	config = require('../config/index');
+let log4js = require('log4js');
+let isConfigured;
 
+exports.configure = function(config){
+	log4js.configure({
+		appenders: [
+			{ type: 'file', filename: config.get("logs:SSO:path") || './logs/SSO.log', category: config.get("logs:SSO:label") ||'SSO' },
+			{ type: 'console' }
+		]
+	});
+	isConfigured = true;
+};
 
-log4js.configure({
-	appenders: [
-		{ type: 'file', filename: config.get("logs:RDS:path") || '../logs/output.log', category: config.get("logger:RDS:label") ||'RDS' },
-		{ type: 'console' }
-	]
-});
-
-
-module.exports = log4js.getLogger('RDS');
+exports.getLogger = function(){
+	if(!isConfigured){
+		throw new Error('logger has not been configured');
+	}else{
+		return log4js.getLogger('SSO');
+	}
+};
