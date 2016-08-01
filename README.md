@@ -6,6 +6,7 @@
 
 * [RDS](#module_RDS)
     * [~RDS](#module_RDS..RDS)
+        * [.configure()](#module_RDS..RDS.configure)
         * [.getUniversityModel()](#module_RDS..RDS.getUniversityModel) ⇒ <code>Mongoose.model</code>
         * [.getWorkTypeModel()](#module_RDS..RDS.getWorkTypeModel) ⇒ <code>Mongoose.model</code>
         * [.getSubjectModel()](#module_RDS..RDS.getSubjectModel) ⇒ <code>Mongoose.model</code>
@@ -61,10 +62,22 @@
 **Kind**: inner class of <code>[RDS](#module_RDS)</code>  
 
 * [~RDS](#module_RDS..RDS)
+    * [.configure()](#module_RDS..RDS.configure)
     * [.getUniversityModel()](#module_RDS..RDS.getUniversityModel) ⇒ <code>Mongoose.model</code>
     * [.getWorkTypeModel()](#module_RDS..RDS.getWorkTypeModel) ⇒ <code>Mongoose.model</code>
     * [.getSubjectModel()](#module_RDS..RDS.getSubjectModel) ⇒ <code>Mongoose.model</code>
 
+<a name="module_RDS..RDS.configure"></a>
+
+#### RDS.configure()
+Настройка модуля
+
+**Kind**: static method of <code>[RDS](#module_RDS..RDS)</code>  
+**Throws**:
+
+- <code>Error</code> , не смог подключиться к базе данных.
+
+**this**: <code>{RDS}</code>  
 <a name="module_RDS..RDS.getUniversityModel"></a>
 
 #### RDS.getUniversityModel() ⇒ <code>Mongoose.model</code>

@@ -8,9 +8,6 @@
 let logger;
 
 
-const UniversityModel = require('./library/university'),
-	WorkTypeModel = require('./library/workTypes'),
-	Subject = require('./library/subjects');
 
 
 const ValidationError = require("@anzuev/studcloud.errors").ValidationError,
@@ -40,12 +37,11 @@ RDS.configure = function(config){
 		logger.error(err);
 		throw err;
 	}else{
-		RDS._University = connection.model("University", UniversityModel);
-		RDS._WorkType = connection.model('WorkType', WorkTypeModel);
-		RDS._Subject = connection.model('Subject', Subject);
+		RDS._University = connection.model("University", require("./library/university"));
+		RDS._WorkType = connection.model('WorkType',require("./library/workTypes"));
+		RDS._Subject = connection.model('Subject',require("./library/subjects"));
 	}
 	logger.info("RDS has been successfully configured and started");
-
 };
 
 /**
