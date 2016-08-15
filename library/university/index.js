@@ -23,7 +23,7 @@ const ValidationError = require("@anzuev/studcloud.errors").ValidationError,
  * @property {date} updated - дата обновления
  * @property {mongoose.Types.ObjectId} id - идентификатор
  */
-var Faculty = new Schema({
+let Faculty = new Schema({
 	title: {
 		type: String
 	},
@@ -37,29 +37,24 @@ var Faculty = new Schema({
 	updated: {
 		type: Date,
 		default: Date.now()
-	},
-	_id: 0,
-	id: {
-		type:Schema.Types.ObjectId,
-		unique: true
 	}
 });
 
 /**
- * @class University
- * @property {string} title - полное название
- * @property {string} shortTitle - сокращенное название
+ * @class module:RDS~University
+ * @property {String} title - полное название
+ * @property {String} shortTitle - сокращенное название
  * @property {Faculty[]} faculties - массив факультетов
- * @property {string} location.city - Город
- * @property {string} location.street - улица
+ * @property {String} location.city - Город
+ * @property {String} location.street - улица
  * @property {string} location.building - Номер дома
  * @property {number} rating - рейтинг университета
  * @property {date} created - дата создания
  * @property {date} updated - дата обновления
  * @property {boolean} enabled - Активен ли предмет?
- * @property {mongoose.Types.ObjectId} id - идентификатор
+ * @property {mongoose.Types.ObjectId} _id - идентификатор
  */
-var University = new Schema({
+let University = new Schema({
 	title: {
 		type: String,
 		unique: true
@@ -86,12 +81,9 @@ var University = new Schema({
 	enabled: {
 		type: Boolean,
 		default: true
-	},
-	_id: 0,
-	id: {
-		type:Schema.Types.ObjectId,
-		unique: true
 	}
+},{
+	collection: 'universities'
 });
 
 
@@ -109,7 +101,7 @@ University.methods.getTitle = getTitle;
 
 /**
  * @function getTitle
- * @memberof module:RDS~Faculty.prototype
+ * @memberof module:RDS~Faculty
  * @this {Faculty}
  * @summary Получение названия университета
  * @returns {string} - название
@@ -123,7 +115,7 @@ Faculty.methods.getTitle = getTitle;
  * @memberof module:RDS~University.prototype
  * @this {University}
  * @summary Получение краткого названия университета
- * @returns {string} - краткое название
+ * @returns {String} - краткое название
  */
 function getShortTitle(){
 	return this.shortTitle;
@@ -145,30 +137,28 @@ Faculty.methods.getShortTitle = getShortTitle;
  * @this {University}
  * @summary Получение университета по id
  * @param id - идентификатор типа
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {University} - все прошло хорошо
  * @reject {DbError}, 404 - не найден тип по id
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getById(id){
 	let University = this;
-	let deffer = Q.defer();
 	let promise = University.findById(id).exec();
 
-	promise.then(function(type){
-		if(!type){
+	return promise.then(function(university){
+		if(!university){
 			throw new DbError(null, 404, Util.format('University with id "%s" does not exist', id));
 		}else{
-			deffer.fulfill(type);
+			return university;
 		}
 	}).catch(function(err){
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
 };
 University.statics.getById = getById;
 
@@ -177,14 +167,13 @@ University.statics.getById = getById;
 function formatForSearch(format){
 	if(format){
 		return {
-			title: this.shortTitle,
-			id: this.id
+			title: this.title,
+			id: this._id
 		}
-
 	}else {
 		return {
 			title: this.shortTitle,
-			id: this.id
+			id: this._id
 		}
 	}
 }
@@ -216,15 +205,13 @@ University.methods.formatForSearch = formatForSearch;
  * @summary Метод для получения списка факультетов в рамках одного универа по id
  * @param {string} university - id университета
  * @param {boolean} format, true - длинное(title), false - краткое(shortTitle)
- * @return {promise}
+ * @return {Promise}
  * @fulfill - Массив для выдачи
  * @reject{DbError}, 204 - не найдено факультетов
  * @reject {DbError}, 500 - ошибка базы данных.
  *
  */
 function getFaculties(university, format) {
-	let deffer = Q.defer();
-
 	let query = [
 		{
 			$match: {
@@ -251,20 +238,24 @@ function getFaculties(university, format) {
 
 	let promise = this.aggregate(query).exec();
 
-	promise.then(function (faculties) {
+	return promise.then(function (result) {
+			let faculties = result[0].faculties || [];
 			if (faculties.length == 0) {
-				deffer.reject(new DbError(null, 204, Util.format('No faculties found in university %s', university)));
+				throw new DbError(null, 204, Util.format('No faculties found in university %s', university));
 			} else {
 				for (let i = 0; i < faculties.length; i++) {
-					faculties[i] = faculties[i].formatForSearch(format);
+					faculties[i] = formatForSearch.call(faculties[i], format);
 				}
-				deffer.fulfill(faculties);
+				return faculties;
 			}
 		})
 		.catch(function (err) {
-			deffer.reject(new DbError(err))
+			if(err instanceof DbError){
+				throw err;
+			}else{
+				throw new DbError(err, 500);
+			}
 		});
-	return deffer.promise;
 }
 University.statics.getFaculties = getFaculties;
 
@@ -282,7 +273,6 @@ University.statics.getFaculties = getFaculties;
  * */
 
 function getUniversities(format){
-	let deffer = Q.defer();
 
 	let promise = this.aggregate([
 		{
@@ -296,18 +286,22 @@ function getUniversities(format){
 
 	promise.then(function(universities){
 			if(universities.length == 0){
-				deffer.reject(new DbError(null, 204, Util.format('No universities found in university %s', university)));
+				throw new DbError(null, 204, Util.format('No universities found'));
 			}else{
 				for (let i = 0; i < universities.length; i++) {
-					universities[i] = universities[i].formatForSearch(format);
+					universities[i] = formatForSearch.call(universities[i], format);
 				}
-				deffer.fulfill(universities);
+				return universities;
 			}
 		})
 		.catch(function(err){
-			deffer.reject(new DbError(err))
+			if(err instanceof DbError){
+				throw err;
+			}else{
+				throw new DbError(err, 500);
+			}
 		});
-	return deffer.promise;
+	return promise;
 };
 University.statics.getUniversities = getUniversities;
 
@@ -317,14 +311,13 @@ University.statics.getUniversities = getUniversities;
  * @summary Получение университетов по названию
  * @param title - регулярное выражение для поиска
  * @param {boolean} format - true - длинное(title), false - краткое(shortTitle)
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill - Массив для выдачи
  * @reject {DbError}, 204 - не найдено университетов
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getUniversitiesByTitle(title, format){
 
-	let deffer = Q.defer();
 
 	let promise = this.aggregate([
 		{
@@ -349,20 +342,23 @@ function getUniversitiesByTitle(title, format){
 	]).exec();
 
 
-	promise.then(function(universities){
+	return promise.then(function(universities){
 			if(universities.length == 0){
-				deffer.reject(new DbError(null, 204, Util.format('No universities found in university %s', university)));
+				throw new DbError(null, 204, Util.format("No universities found by title '%s'", title));
 			}else{
 				for (let i = 0; i < universities.length; i++) {
-					universities[i] = universities[i].formatForSearch(format);
+					universities[i] = formatForSearch.call(universities[i], format);
 				}
-				deffer.fulfill(universities);
+				return universities;
 			}
 		})
 		.catch(function(err){
-			deffer.reject(new DbError(err))
+			if(err instanceof DbError){
+				throw err;
+			}else{
+				throw new DbError(err, 500);
+			}
 		});
-	return deffer.promise;
 };
 University.statics.getUniversitiesByTitle = getUniversitiesByTitle;
 
@@ -375,13 +371,12 @@ University.statics.getUniversitiesByTitle = getUniversitiesByTitle;
  * @param title - регулярное выражение для поиска
  * @param university - идентификатор университета
  * @param {boolean} format - true - длинное(title), false - краткое(shortTitle)
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill - Массив для выдачи
  * @reject {DbError}, 204 - не найдено университетов
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getFacultiesByTitle(title, university, format){
-	let deffer = Q.defer();
 
 	let query = [
 		{
@@ -410,20 +405,25 @@ function getFacultiesByTitle(title, university, format){
 
 	let promise = this.aggregate(query).exec();
 
-	promise.then(function (faculties) {
+	return promise.then(function (result) {
+			result[0] = result[0] || {};
+			let faculties = result[0].faculties || [];
 			if (faculties.length == 0) {
-				deffer.reject(new DbError(null, 204, Util.format('No faculties found in university %s', university)));
+				throw new DbError(null, 204, Util.format('No faculties found in university %s by title %s', university, title));
 			} else {
 				for (let i = 0; i < faculties.length; i++) {
-					faculties[i] = faculties[i].formatForSearch(format);
+					faculties[i] = formatForSearch.call(faculties[i], format);
 				}
-				deffer.fulfill(faculties);
+				return faculties;
 			}
 		})
 		.catch(function (err) {
-			deffer.reject(new DbError(err))
+			if(err instanceof DbError){
+				throw err;
+			}else{
+				throw new DbError(err, 500);
+			}
 		});
-	return deffer.promise;
 };
 University.statics.getFacultiesByTitle = getFacultiesByTitle;
 
@@ -451,8 +451,8 @@ function isExist(university, faculty){
 			}
 		})
 		.catch(function(err){
-			err = new DbError(err);
 			logger.error(err);
+			err = new DbError(err);
 			deffer.reject(err);
 		});
 	return deffer.promise;
@@ -466,40 +466,40 @@ University.statics.isExist = isExist;
  * @summary Метод, возвращающий названия факультета и университета
  * @param university - идентификатор университета
  * @param faculty - идентификатор факульета
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {object}, проперти university, faculty
  * @reject {DbError}, 500 - ошибка базы данных
  */
 function getUniversityAndFacultyTitles(university, faculty){
-	let deffer = Q.defer();
 	let promise = this.findOne({
-			_id: user.university,
-			"faculties._id": user.faculty
+			_id: university,
+			"faculties._id": faculty
 		},
 		{
 			"faculties.$":1,
 			title:1
 		}).exec();
 
-	promise.then(function(item){
+	return promise.then(function(item){
 			if(item){
-				deffer.fulfill({
-					university: item.getTitle(),
-					faculty: item.faculties[0].getTitle()
-				});
+				return {
+					university: getTitle.call(item),
+					faculty: getTitle.call(item.faculties[0])
+				};
 			}else{
-				err = new DbError(null, 404, Util.format("University %s and faculty %s not found", university, faculty));
-				logger.error(err);
-				deffer.reject(err);
-				deffer.fulfill(err);
+				let err = new DbError(null, 404, Util.format("University %s and faculty %s not found", university, faculty));
+				throw err;
 			}
 		})
 		.catch(function(err){
-			err = new DbError(err);
 			logger.error(err);
-			deffer.reject(err);
+			if(err instanceof DbError){
+				throw err;
+			}else{
+				throw new DbError(err, 500);
+			}
 		});
-	return deffer.promise;
+
 };
 University.statics.getUniversityAndFacultyTitles = getUniversityAndFacultyTitles;
 
@@ -552,21 +552,22 @@ University.statics.createNew = createNew;
 
 /**
  * @this {University}
- * @memberof module:RDS~University.prototype
+ * @memberof module:RDS~University
  * @summary Добавление нового факультета в университет
  * @param title - полное название
  * @param shortTitle - краткое название
  * @throws {ValidationError}, 400 - Факультет уже присутствует в университете
  */
 function addFaculty(title, shortTitle){
+	let univer = this;
 	this.faculties.forEach(function(item){
 		if(item.title == title || item.shortTitle == shortTitle){
-			let err = new ValidationError(400, Util.format("Faculty '%s' already exist in university %s(id = %s)", title, this.title, this._id));
+			let err = new ValidationError(400, Util.format("Faculty '%s' already exist in university %s(id = %s)", title, univer.getTitle(), univer._id));
 			logger.error(err);
 			throw err;
 		}
 	});
-	let newFaculty = new Faculty({
+	let newFaculty = new (this.model("Faculty"))({
 		title: title,
 		shortTitle: shortTitle
 	});
@@ -599,5 +600,5 @@ function* saveUniversity (){
 University.methods.saveUniversity = saveUniversity;
 
 
-
-module.exports = University;
+module.exports.University = University;
+module.exports.Faculty = Faculty;

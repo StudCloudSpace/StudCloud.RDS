@@ -6,7 +6,7 @@ let isConfigured;
 exports.configure = function(config){
 	log4js.configure({
 		appenders: [
-			{ type: 'file', filename: config.get("logs:SSO:path") || './logs/SSO.log', category: config.get("logs:SSO:label") ||'SSO' },
+			{ type: 'file', filename: config.get("logs:RDS:path") || './logs/RDS.log', category: config.get("logs:RDS:label") ||'RDS' },
 			{ type: 'console' }
 		]
 	});
@@ -15,8 +15,8 @@ exports.configure = function(config){
 
 exports.getLogger = function(){
 	if(!isConfigured){
-		throw new Error('logger has not been configured');
+		throw new Error('RDS logger has not been configured');
 	}else{
-		return log4js.getLogger('SSO');
+		return log4js.getLogger('RDS');
 	}
 };

@@ -16,7 +16,7 @@
             * [.getTitle()](#module_RDS..Subject+getTitle) ⇒ <code>string</code>
         * _static_
             * [.isExist(id)](#module_RDS..Subject.isExist) ⇒ <code>promise</code>
-            * [.getById(id)](#module_RDS..Subject.getById) ⇒ <code>promise</code>
+            * [.getById(id)](#module_RDS..Subject.getById) ⇒ <code>Promise</code>
             * [.getEnabled(query, skip)](#module_RDS..Subject.getEnabled) ⇒ <code>promise</code>
             * [.getAll(query, skip)](#module_RDS..Subject.getAll) ⇒ <code>promise</code>
             * [.getDisabled(query, skip)](#module_RDS..Subject.getDisabled) ⇒ <code>promise</code>
@@ -24,37 +24,39 @@
             * [.enable(id)](#module_RDS..Subject.enable) ⇒ <code>promise</code>
             * [.disable(id)](#module_RDS..Subject.disable) ⇒ <code>promise</code>
     * [~Faculty](#module_RDS..Faculty)
-        * [.getTitle()](#module_RDS..Faculty+getTitle) ⇒ <code>string</code>
-        * [.getShortTitle()](#module_RDS..Faculty+getShortTitle) ⇒ <code>string</code>
-        * [.formatForSearch(format)](#module_RDS..Faculty+formatForSearch) ⇒ <code>object</code>
+        * _instance_
+            * [.getShortTitle()](#module_RDS..Faculty+getShortTitle) ⇒ <code>string</code>
+            * [.formatForSearch(format)](#module_RDS..Faculty+formatForSearch) ⇒ <code>object</code>
+        * _static_
+            * [.getTitle()](#module_RDS..Faculty.getTitle) ⇒ <code>string</code>
     * [~University](#module_RDS..University)
         * _instance_
             * [.getTitle()](#module_RDS..University+getTitle) ⇒ <code>string</code>
-            * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>string</code>
+            * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>String</code>
             * [.formatForSearch(format)](#module_RDS..University+formatForSearch) ⇒ <code>object</code>
-            * [.addFaculty(title, shortTitle)](#module_RDS..University+addFaculty)
             * [.saveUniversity()](#module_RDS..University+saveUniversity) ⇒ <code>university</code>
         * _static_
-            * [.getById(id)](#module_RDS..University.getById) ⇒ <code>promise</code>
-            * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>promise</code>
+            * [.getById(id)](#module_RDS..University.getById) ⇒ <code>Promise</code>
+            * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>Promise</code>
             * [.getUniversities(format)](#module_RDS..University.getUniversities) ⇒ <code>promise</code>
-            * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>promise</code>
-            * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>promise</code>
+            * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>Promise</code>
+            * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>Promise</code>
             * [.isExist(university, faculty)](#module_RDS..University.isExist) ⇒ <code>promise</code>
-            * [.getUniversityAndFacultyTitles(university, faculty)](#module_RDS..University.getUniversityAndFacultyTitles) ⇒ <code>promise</code>
+            * [.getUniversityAndFacultyTitles(university, faculty)](#module_RDS..University.getUniversityAndFacultyTitles) ⇒ <code>Promise</code>
             * [.createNew(title, shortTitle, street, building, city, rating)](#module_RDS..University.createNew) ⇒ <code>promise</code>
+            * [.addFaculty(title, shortTitle)](#module_RDS..University.addFaculty)
     * [~WorkType](#module_RDS..WorkType)
         * _instance_
             * [.saveType()](#module_RDS..WorkType+saveType) ⇒ <code>WorkType</code>
         * _static_
-            * [.setName(id, newTitle)](#module_RDS..WorkType.setName) ⇒ <code>promise</code>
-            * [.enable(id)](#module_RDS..WorkType.enable) ⇒ <code>promise</code>
-            * [.disable(id)](#module_RDS..WorkType.disable) ⇒ <code>promise</code>
-            * [.getById(id)](#module_RDS..WorkType.getById) ⇒ <code>promise</code>
-            * [.getEnabled(query, skip)](#module_RDS..WorkType.getEnabled) ⇒ <code>promise</code>
-            * [.getAll(query, skip)](#module_RDS..WorkType.getAll) ⇒ <code>promise</code>
-            * [.getDisabled(query, skip)](#module_RDS..WorkType.getDisabled) ⇒ <code>promise</code>
-            * [.isExist(id)](#module_RDS..WorkType.isExist) ⇒ <code>promise</code>
+            * [.setName(id, newTitle)](#module_RDS..WorkType.setName) ⇒ <code>Promise</code>
+            * [.enable(id)](#module_RDS..WorkType.enable) ⇒ <code>Promise</code>
+            * [.disable(id)](#module_RDS..WorkType.disable) ⇒ <code>Promise</code>
+            * [.getById(id)](#module_RDS..WorkType.getById) ⇒ <code>Promise</code>
+            * [.getEnabled(query, skip)](#module_RDS..WorkType.getEnabled) ⇒ <code>Promise</code>
+            * [.getAll(query, skip)](#module_RDS..WorkType.getAll) ⇒ <code>Promise</code>
+            * [.getDisabled(query, skip)](#module_RDS..WorkType.getDisabled) ⇒ <code>Promise</code>
+            * [.isExist(id)](#module_RDS..WorkType.isExist) ⇒ <code>Promise</code>
 
 <a name="module_RDS..RDS"></a>
 
@@ -128,7 +130,7 @@
         * [.getTitle()](#module_RDS..Subject+getTitle) ⇒ <code>string</code>
     * _static_
         * [.isExist(id)](#module_RDS..Subject.isExist) ⇒ <code>promise</code>
-        * [.getById(id)](#module_RDS..Subject.getById) ⇒ <code>promise</code>
+        * [.getById(id)](#module_RDS..Subject.getById) ⇒ <code>Promise</code>
         * [.getEnabled(query, skip)](#module_RDS..Subject.getEnabled) ⇒ <code>promise</code>
         * [.getAll(query, skip)](#module_RDS..Subject.getAll) ⇒ <code>promise</code>
         * [.getDisabled(query, skip)](#module_RDS..Subject.getDisabled) ⇒ <code>promise</code>
@@ -170,7 +172,7 @@
 
 <a name="module_RDS..Subject.getById"></a>
 
-#### Subject.getById(id) ⇒ <code>promise</code>
+#### Subject.getById(id) ⇒ <code>Promise</code>
 Получение предмета по id
 
 **Kind**: static method of <code>[Subject](#module_RDS..Subject)</code>  
@@ -293,17 +295,12 @@
 
 
 * [~Faculty](#module_RDS..Faculty)
-    * [.getTitle()](#module_RDS..Faculty+getTitle) ⇒ <code>string</code>
-    * [.getShortTitle()](#module_RDS..Faculty+getShortTitle) ⇒ <code>string</code>
-    * [.formatForSearch(format)](#module_RDS..Faculty+formatForSearch) ⇒ <code>object</code>
+    * _instance_
+        * [.getShortTitle()](#module_RDS..Faculty+getShortTitle) ⇒ <code>string</code>
+        * [.formatForSearch(format)](#module_RDS..Faculty+formatForSearch) ⇒ <code>object</code>
+    * _static_
+        * [.getTitle()](#module_RDS..Faculty.getTitle) ⇒ <code>string</code>
 
-<a name="module_RDS..Faculty+getTitle"></a>
-
-#### faculty.getTitle() ⇒ <code>string</code>
-**Kind**: instance method of <code>[Faculty](#module_RDS..Faculty)</code>  
-**Summary**: Получение названия университета  
-**Returns**: <code>string</code> - - название  
-**this**: <code>{Faculty}</code>  
 <a name="module_RDS..Faculty+getShortTitle"></a>
 
 #### faculty.getShortTitle() ⇒ <code>string</code>
@@ -323,6 +320,13 @@
 | --- | --- | --- |
 | format | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
 
+<a name="module_RDS..Faculty.getTitle"></a>
+
+#### Faculty.getTitle() ⇒ <code>string</code>
+**Kind**: static method of <code>[Faculty](#module_RDS..Faculty)</code>  
+**Summary**: Получение названия университета  
+**Returns**: <code>string</code> - - название  
+**this**: <code>{Faculty}</code>  
 <a name="module_RDS..University"></a>
 
 ### RDS~University
@@ -331,35 +335,35 @@
 
 | Name | Type | Description |
 | --- | --- | --- |
-| title | <code>string</code> | полное название |
-| shortTitle | <code>string</code> | сокращенное название |
+| title | <code>String</code> | полное название |
+| shortTitle | <code>String</code> | сокращенное название |
 | faculties | <code>Array.&lt;Faculty&gt;</code> | массив факультетов |
-| location.city | <code>string</code> | Город |
-| location.street | <code>string</code> | улица |
+| location.city | <code>String</code> | Город |
+| location.street | <code>String</code> | улица |
 | location.building | <code>string</code> | Номер дома |
 | rating | <code>number</code> | рейтинг университета |
 | created | <code>date</code> | дата создания |
 | updated | <code>date</code> | дата обновления |
 | enabled | <code>boolean</code> | Активен ли предмет? |
-| id | <code>mongoose.Types.ObjectId</code> | идентификатор |
+| _id | <code>mongoose.Types.ObjectId</code> | идентификатор |
 
 
 * [~University](#module_RDS..University)
     * _instance_
         * [.getTitle()](#module_RDS..University+getTitle) ⇒ <code>string</code>
-        * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>string</code>
+        * [.getShortTitle()](#module_RDS..University+getShortTitle) ⇒ <code>String</code>
         * [.formatForSearch(format)](#module_RDS..University+formatForSearch) ⇒ <code>object</code>
-        * [.addFaculty(title, shortTitle)](#module_RDS..University+addFaculty)
         * [.saveUniversity()](#module_RDS..University+saveUniversity) ⇒ <code>university</code>
     * _static_
-        * [.getById(id)](#module_RDS..University.getById) ⇒ <code>promise</code>
-        * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>promise</code>
+        * [.getById(id)](#module_RDS..University.getById) ⇒ <code>Promise</code>
+        * [.getFaculties(university, format,)](#module_RDS..University.getFaculties) ⇒ <code>Promise</code>
         * [.getUniversities(format)](#module_RDS..University.getUniversities) ⇒ <code>promise</code>
-        * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>promise</code>
-        * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>promise</code>
+        * [.getUniversitiesByTitle(title, format)](#module_RDS..University.getUniversitiesByTitle) ⇒ <code>Promise</code>
+        * [.getFacultiesByTitle(title, university, format)](#module_RDS..University.getFacultiesByTitle) ⇒ <code>Promise</code>
         * [.isExist(university, faculty)](#module_RDS..University.isExist) ⇒ <code>promise</code>
-        * [.getUniversityAndFacultyTitles(university, faculty)](#module_RDS..University.getUniversityAndFacultyTitles) ⇒ <code>promise</code>
+        * [.getUniversityAndFacultyTitles(university, faculty)](#module_RDS..University.getUniversityAndFacultyTitles) ⇒ <code>Promise</code>
         * [.createNew(title, shortTitle, street, building, city, rating)](#module_RDS..University.createNew) ⇒ <code>promise</code>
+        * [.addFaculty(title, shortTitle)](#module_RDS..University.addFaculty)
 
 <a name="module_RDS..University+getTitle"></a>
 
@@ -370,10 +374,10 @@
 **this**: <code>{University}</code>  
 <a name="module_RDS..University+getShortTitle"></a>
 
-#### university.getShortTitle() ⇒ <code>string</code>
+#### university.getShortTitle() ⇒ <code>String</code>
 **Kind**: instance method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Получение краткого названия университета  
-**Returns**: <code>string</code> - - краткое название  
+**Returns**: <code>String</code> - - краткое название  
 **this**: <code>{University}</code>  
 <a name="module_RDS..University+formatForSearch"></a>
 
@@ -387,22 +391,6 @@
 | --- | --- | --- |
 | format | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
 
-<a name="module_RDS..University+addFaculty"></a>
-
-#### university.addFaculty(title, shortTitle)
-**Kind**: instance method of <code>[University](#module_RDS..University)</code>  
-**Summary**: Добавление нового факультета в университет  
-**Throws**:
-
-- <code>ValidationError</code> , 400 - Факультет уже присутствует в университете
-
-**this**: <code>{University}</code>  
-
-| Param | Description |
-| --- | --- |
-| title | полное название |
-| shortTitle | краткое название |
-
 <a name="module_RDS..University+saveUniversity"></a>
 
 #### university.saveUniversity() ⇒ <code>university</code>
@@ -415,7 +403,7 @@
 **this**: <code>{University}</code>  
 <a name="module_RDS..University.getById"></a>
 
-#### University.getById(id) ⇒ <code>promise</code>
+#### University.getById(id) ⇒ <code>Promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Получение университета по id  
 **this**: <code>{University}</code>  
@@ -429,7 +417,7 @@
 
 <a name="module_RDS..University.getFaculties"></a>
 
-#### University.getFaculties(university, format,) ⇒ <code>promise</code>
+#### University.getFaculties(university, format,) ⇒ <code>Promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Метод для получения списка факультетов в рамках одного универа по id  
 **this**: <code>{University}</code>  
@@ -458,7 +446,7 @@
 
 <a name="module_RDS..University.getUniversitiesByTitle"></a>
 
-#### University.getUniversitiesByTitle(title, format) ⇒ <code>promise</code>
+#### University.getUniversitiesByTitle(title, format) ⇒ <code>Promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Получение университетов по названию  
 **this**: <code>{University}</code>  
@@ -473,7 +461,7 @@
 
 <a name="module_RDS..University.getFacultiesByTitle"></a>
 
-#### University.getFacultiesByTitle(title, university, format) ⇒ <code>promise</code>
+#### University.getFacultiesByTitle(title, university, format) ⇒ <code>Promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Получение университетов по названию  
 **this**: <code>{University}</code>  
@@ -503,7 +491,7 @@
 
 <a name="module_RDS..University.getUniversityAndFacultyTitles"></a>
 
-#### University.getUniversityAndFacultyTitles(university, faculty) ⇒ <code>promise</code>
+#### University.getUniversityAndFacultyTitles(university, faculty) ⇒ <code>Promise</code>
 **Kind**: static method of <code>[University](#module_RDS..University)</code>  
 **Summary**: Метод, возвращающий названия факультета и университета  
 **this**: <code>{University}</code>  
@@ -531,6 +519,22 @@
 | city | город |
 | rating | рейтинг |
 
+<a name="module_RDS..University.addFaculty"></a>
+
+#### University.addFaculty(title, shortTitle)
+**Kind**: static method of <code>[University](#module_RDS..University)</code>  
+**Summary**: Добавление нового факультета в университет  
+**Throws**:
+
+- <code>ValidationError</code> , 400 - Факультет уже присутствует в университете
+
+**this**: <code>{University}</code>  
+
+| Param | Description |
+| --- | --- |
+| title | полное название |
+| shortTitle | краткое название |
+
 <a name="module_RDS..WorkType"></a>
 
 ### RDS~WorkType
@@ -550,14 +554,14 @@
     * _instance_
         * [.saveType()](#module_RDS..WorkType+saveType) ⇒ <code>WorkType</code>
     * _static_
-        * [.setName(id, newTitle)](#module_RDS..WorkType.setName) ⇒ <code>promise</code>
-        * [.enable(id)](#module_RDS..WorkType.enable) ⇒ <code>promise</code>
-        * [.disable(id)](#module_RDS..WorkType.disable) ⇒ <code>promise</code>
-        * [.getById(id)](#module_RDS..WorkType.getById) ⇒ <code>promise</code>
-        * [.getEnabled(query, skip)](#module_RDS..WorkType.getEnabled) ⇒ <code>promise</code>
-        * [.getAll(query, skip)](#module_RDS..WorkType.getAll) ⇒ <code>promise</code>
-        * [.getDisabled(query, skip)](#module_RDS..WorkType.getDisabled) ⇒ <code>promise</code>
-        * [.isExist(id)](#module_RDS..WorkType.isExist) ⇒ <code>promise</code>
+        * [.setName(id, newTitle)](#module_RDS..WorkType.setName) ⇒ <code>Promise</code>
+        * [.enable(id)](#module_RDS..WorkType.enable) ⇒ <code>Promise</code>
+        * [.disable(id)](#module_RDS..WorkType.disable) ⇒ <code>Promise</code>
+        * [.getById(id)](#module_RDS..WorkType.getById) ⇒ <code>Promise</code>
+        * [.getEnabled(query, skip)](#module_RDS..WorkType.getEnabled) ⇒ <code>Promise</code>
+        * [.getAll(query, skip)](#module_RDS..WorkType.getAll) ⇒ <code>Promise</code>
+        * [.getDisabled(query, skip)](#module_RDS..WorkType.getDisabled) ⇒ <code>Promise</code>
+        * [.isExist(id)](#module_RDS..WorkType.isExist) ⇒ <code>Promise</code>
 
 <a name="module_RDS..WorkType+saveType"></a>
 
@@ -572,7 +576,7 @@
 **this**: <code>{WorkType}</code>  
 <a name="module_RDS..WorkType.setName"></a>
 
-#### WorkType.setName(id, newTitle) ⇒ <code>promise</code>
+#### WorkType.setName(id, newTitle) ⇒ <code>Promise</code>
 Изменение title у типа работы
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -589,7 +593,7 @@
 
 <a name="module_RDS..WorkType.enable"></a>
 
-#### WorkType.enable(id) ⇒ <code>promise</code>
+#### WorkType.enable(id) ⇒ <code>Promise</code>
 Активация работы по id
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -604,7 +608,7 @@
 
 <a name="module_RDS..WorkType.disable"></a>
 
-#### WorkType.disable(id) ⇒ <code>promise</code>
+#### WorkType.disable(id) ⇒ <code>Promise</code>
 Дизактивация работы по id
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -619,7 +623,7 @@
 
 <a name="module_RDS..WorkType.getById"></a>
 
-#### WorkType.getById(id) ⇒ <code>promise</code>
+#### WorkType.getById(id) ⇒ <code>Promise</code>
 Получение типа по id
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -634,7 +638,7 @@
 
 <a name="module_RDS..WorkType.getEnabled"></a>
 
-#### WorkType.getEnabled(query, skip) ⇒ <code>promise</code>
+#### WorkType.getEnabled(query, skip) ⇒ <code>Promise</code>
 Поиск/получение неактивированных типов
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -650,7 +654,7 @@
 
 <a name="module_RDS..WorkType.getAll"></a>
 
-#### WorkType.getAll(query, skip) ⇒ <code>promise</code>
+#### WorkType.getAll(query, skip) ⇒ <code>Promise</code>
 Поиск/получение по всем типам работ
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -666,7 +670,7 @@
 
 <a name="module_RDS..WorkType.getDisabled"></a>
 
-#### WorkType.getDisabled(query, skip) ⇒ <code>promise</code>
+#### WorkType.getDisabled(query, skip) ⇒ <code>Promise</code>
 Поиск/получение неактивированных типов
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  
@@ -682,7 +686,7 @@
 
 <a name="module_RDS..WorkType.isExist"></a>
 
-#### WorkType.isExist(id) ⇒ <code>promise</code>
+#### WorkType.isExist(id) ⇒ <code>Promise</code>
 Проверка существуюет ли такой тип
 
 **Kind**: static method of <code>[WorkType](#module_RDS..WorkType)</code>  

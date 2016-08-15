@@ -89,7 +89,7 @@ WorkType.statics.createNew = createNew;
  * @memberof module:RDS~WorkType
  * @param id - идентификатор типа работы
  * @param newTitle - новое название
- * @return {promise}
+ * @return {Promise}
  * @fulfil {WorkType}, объект типа WorkType
  * @reject {DbError}, 400 - нарушена уникальность названия
  * @reject {DbError}, 404 - нет типа с таким названием
@@ -99,10 +99,9 @@ WorkType.statics.createNew = createNew;
 
 function setName(id, newTitle){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise = WorkType.findOne({_id: id}).exec();
 
-	promise.then(function(type){
+	return promise.then(function(type){
 		if(!type){
 			throw new DbError(null, 404, Util.format('WorkType with id "%s" does not exist', id));
 		}else{
@@ -110,18 +109,17 @@ function setName(id, newTitle){
 			type.updated = new Date();
 			return type.save();
 		}
-	}).then(function(workType){
-		return deffer.fulfill(workType);
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else if(err.code == 11000 || err.code == 11001) {
-			return deffer.reject(new DbError(null, 400, Util.format('WorkType with title "%s" already exists', newTitle)));
+			throw new DbError(null, 400, Util.format('WorkType with title "%s" already exists', newTitle));
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.setName = setName;
 
@@ -132,17 +130,16 @@ WorkType.statics.setName = setName;
  * @this {WorkType}
  * @memberof module:RDS~WorkType
  * @param id - идентификатор работы
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {WorkType} - все прошло хорошо
  * @reject {DbError}, 404 - не найден тип по id
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function enable(id){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise = WorkType.findById(id).exec();
 
-	promise.then(function(type){
+	return promise.then(function(type){
 		if(!type){
 			throw new DbError(null, 404, Util.format('WorkType with id "%s" does not exist', id));
 		}else{
@@ -150,16 +147,15 @@ function enable(id){
 			type.updated = new Date();
 			return type.save();
 		}
-	}).then(function(workType){
-		return deffer.fulfill(workType);
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.enable = enable;
 
@@ -169,17 +165,16 @@ WorkType.statics.enable = enable;
  * @this {WorkType}
  * @memberof module:RDS~WorkType
  * @param id - идентификатор работы
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {WorkType} - все прошло хорошо
  * @reject {DbError}, 404 - не найден тип по id
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function disable(id){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise = WorkType.findById(id).exec();
 
-	promise.then(function(type){
+	return promise.then(function(type){
 		if(!type){
 			throw new DbError(null, 404, Util.format('WorkType with id "%s" does not exist', id));
 		}else{
@@ -187,16 +182,14 @@ function disable(id){
 			type.updated = new Date();
 			return type.save();
 		}
-	}).then(function(workType){
-		return deffer.fulfill(workType);
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
 };
 WorkType.statics.disable = disable;
 
@@ -206,30 +199,29 @@ WorkType.statics.disable = disable;
  * @this {WorkType}
  * @memberof module:RDS~WorkType
  * @param id - идентификатор типа
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {WorkType} - все прошло хорошо
  * @reject {DbError}, 404 - не найден тип по id
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getById(id){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise = WorkType.findById(id).exec();
 
-	promise.then(function(type){
+	return promise.then(function(type){
 		if(!type){
 			throw new DbError(null, 404, Util.format('WorkType with id "%s" does not exist', id));
 		}else{
-			deffer.fulfill(type);
+			return type;
 		}
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
 };
 WorkType.statics.getById = getById;
 
@@ -242,14 +234,13 @@ WorkType.statics.getById = getById;
  * @memberof module:RDS~WorkType
  * @param query - опционально. Строка для поиска
  * @param {number} skip - сколько страниц пропускаем сначала?
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {workType}
  * @reject {DbError}, 204 - ничего не найдено
  * @reject {DbError}, 500 - ошибка сервера бд
  */
 function getEnabled(query, skip){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise;
 	if(query){
 		promise = WorkType.find(
@@ -264,20 +255,21 @@ function getEnabled(query, skip){
 			}).limit(10).skip(skip * perPage)
 			.exec();
 	}
-	promise.then(function(types){
+	return promise.then(function(types){
 		if(types.length == 0){
 			throw new DbError(null, 204, Util.format('No workTypes found by query "%s"', query));
 		}else{
-			deffer.fulfill(types);
+			return types;
 		}
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.getEnabled = getEnabled;
 
@@ -288,39 +280,39 @@ WorkType.statics.getEnabled = getEnabled;
  * @memberof module:RDS~WorkType
  * @param query - опционально. Строка для поиска
  * @param {number} skip - сколько страниц пропускаем сначала?
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {workType}
  * @reject {DbError}, 204 - ничего не найдено
  * @reject {DbError}, 500 - ошибка сервера бд
  */
 function getAll(query, skip){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise;
-	if(query && query.length != 0){
+	if(query){
 		promise = WorkType.find(
 			{
 				title: {$regex: query}
 			}).skip(skip * perPage).exec();
 	}else{
 		promise = WorkType.find(
-			{}).skip(skip * perPage).limit(10)
+			{}).limit(10).skip(skip * perPage)
 			.exec();
 	}
-	promise.then(function(types){
+	return promise.then(function(types){
 		if(types.length == 0){
 			throw new DbError(null, 204, Util.format('No workTypes found by query "%s"', query));
 		}else{
-			deffer.fulfill(types);
+			return types;
 		}
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.getAll = getAll;
 
@@ -330,14 +322,13 @@ WorkType.statics.getAll = getAll;
  * @memberof module:RDS~WorkType
  * @param query - опционально. Строка для поиска
  * @param {number} skip - сколько страниц пропускаем сначала?
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {workType}
  * @reject {DbError}, 204 - ничего не найдено
  * @reject {DbError}, 500 - ошибка сервера бд
  */
 function getDisabled(query, skip){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise;
 	if(query){
 		promise = WorkType.find(
@@ -349,23 +340,24 @@ function getDisabled(query, skip){
 		promise = WorkType.find(
 			{
 				enabled: false
-			}).skip(skip * perPage).limit(10)
+			}).limit(10).skip(skip * perPage)
 			.exec();
 	}
-	promise.then(function(types){
+	return promise.then(function(types){
 		if(types.length == 0){
-			throw new DbError(null, 204, Util.format('No workTypes found by query "%s"', query));
+			throw new DbError(null, 204, Util.format('No disabled workTypes found by query "%s"', query));
 		}else{
-			deffer.fulfill(types);
+			return types;
 		}
 	}).catch(function(err){
+		logger.error(err);
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.getDisabled = getDisabled;
 
@@ -375,25 +367,29 @@ WorkType.statics.getDisabled = getDisabled;
  * @this {WorkType}
  * @memberof module:RDS~WorkType
  * @param id - идентификатор типа
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {boolean}, true - тип существует, false - типа нет.
  * @reject {DbError}, 500 - ошибка бд
  */
 function isExist(id){
 	let WorkType = this;
-	let deffer = Q.defer();
 	let promise = WorkType.findById(id).exec();
 
-	promise.then(function(type){
+	return promise.then(function(type){
 		if(!type){
-			deffer.fulfill(false);
+			return false;
 		}else{
-			deffer.fulfill(true);
+			return true;
 		}
 	}).catch(function(err){
-		return deffer.reject(new DbError(err, 500));
+		logger.error(err);
+		if(err instanceof DbError){
+			throw err;
+		}else{
+			throw new DbError(err, 500);
+		}
 	});
-	return deffer.promise;
+
 };
 WorkType.statics.isExist = isExist;
 

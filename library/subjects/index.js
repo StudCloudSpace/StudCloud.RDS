@@ -60,7 +60,6 @@ var Subject = new Schema({
 
 function* createNew(title){
 	let Subject = this;
-	let deffer = Q.defer();
 	let promise = Subject.find({title: title}).exec();
 
 	try{
@@ -120,31 +119,30 @@ Subject.statics.isExist = isExist;
  * @this {Subject}
  * @memberof module:RDS~Subject
  * @param id - идентификатор предмета
- * @returns {promise}
+ * @returns {Promise}
  * @fulfill {Subject} - все прошло хорошо
  * @reject {DbError}, 404 - не найден предмет по id
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getById(id){
 	let Subject = this;
-	let deffer = Q.defer();
 	let promise = Subject.findById(id).exec();
 	
-	promise.then(function(subject){
+	return promise.then(function(subject){
 		if(!subject){
 			throw new DbError(null, 404, Util.format('Subject with id "%s" does not exist', id));
 		}else{
-			deffer.fulfill(subject);
+			return subject;
 		}
 	}).catch(function(err){
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
 };
+
 Subject.statics.getById = getById;
 
 
@@ -296,7 +294,6 @@ Subject.statics.getDisabled = getDisabled;
 
 function setName(id, newTitle){
 	let Subject = this;
-	let deffer = Q.defer();
 	let promise = Subject.findOne({_id: id}).exec();
 
 	promise.then(function(subject){
@@ -305,20 +302,18 @@ function setName(id, newTitle){
 		}else{
 			subject.title = newTitle;
 			subject.updated = new Date();
-			return subject.saveSubject();
+			return subject.save();
 		}
-	}).then(function(subject){
-		return deffer.fulfill(subject);
 	}).catch(function(err){
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else if(err.code == 11000 || err.code == 11001) {
-			return deffer.reject(new DbError(null, 400, Util.format('Subject with title "%s" already exists', newTitle)));
+			throw new DbError(null, 400, Util.format('Subject with title "%s" already exists', newTitle));
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+	return promise;
 };
 Subject.statics.setName = setName;
 
@@ -336,7 +331,6 @@ Subject.statics.setName = setName;
  */
 function enable(id){
 	let Subject = this;
-	let deffer = Q.defer();
 	let promise = Subject.findById(id).exec();
 
 	promise.then(function(subject){
@@ -345,18 +339,16 @@ function enable(id){
 		}else{
 			subject.enabled = true;
 			subject.updated = new Date();
-			return subject.saveSubject();
+			return subject.save();
 		}
-	}).then(function(subject){
-		return deffer.fulfill(subject);
 	}).catch(function(err){
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+	return promise;
 };
 Subject.statics.enable = enable;
 
@@ -373,7 +365,6 @@ Subject.statics.enable = enable;
  */
 function disable(id){
 	let Subject = this;
-	let deffer = Q.defer();
 	let promise = Subject.findById(id).exec();
 
 	promise.then(function(subject){
@@ -382,18 +373,16 @@ function disable(id){
 		}else{
 			subject.enabled = false;
 			subject.updated = new Date();
-			return subject.saveSubject();
+			return subject.save();
 		}
-	}).then(function(subject){
-		return deffer.fulfill(subject);
 	}).catch(function(err){
 		if(err instanceof DbError){
-			return deffer.reject(err);
+			throw err;
 		}else{
-			return deffer.reject(new DbError(err, 500));
+			throw new DbError(err, 500);
 		}
 	});
-	return deffer.promise;
+	return promise;
 };
 Subject.statics.disable = disable;
 

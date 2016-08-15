@@ -8,8 +8,6 @@
 let logger;
 
 
-
-
 const ValidationError = require("@anzuev/studcloud.errors").ValidationError,
 	DbError = require("@anzuev/studcloud.errors").DbError;
 
@@ -37,7 +35,8 @@ RDS.configure = function(config){
 		logger.error(err);
 		throw err;
 	}else{
-		RDS._University = connection.model("University", require("./library/university"));
+		RDS._University = connection.model("University", require("./library/university").University);
+		connection.model("Faculty", require("./library/university").Faculty);
 		RDS._WorkType = connection.model('WorkType',require("./library/workTypes"));
 		RDS._Subject = connection.model('Subject',require("./library/subjects"));
 	}

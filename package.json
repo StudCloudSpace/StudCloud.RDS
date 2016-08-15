@@ -1,6 +1,6 @@
 {
   "name": "@anzuev/studcloud.rds",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "RDS module for StudCloud Project",
   "main": "index.js",
   "scripts": {
