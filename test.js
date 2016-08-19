@@ -13,11 +13,8 @@ let WorkType = RDS.getWorkTypeModel();
 
 Q.async(function*(){
 	try{
-		let res = yield WorkType.isExist("57b19117a91def6018ea3c6b");
-		//res = yield WorkType.getAll("");
-		//res.addFaculty("ABC", 'AD');
-		//res = yield* res.saveUniversity();//University.getUniversities(true);
-		console.log(res)
+		let res = yield University.getFacultiesByTitle("", "57b70b3f00c19c30592d44d8", true);
+		console.log(res);
 	}catch(err){
 		throw err;
 	}

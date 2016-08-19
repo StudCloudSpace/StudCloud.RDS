@@ -456,7 +456,7 @@
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title |  | регулярное выражение для поиска |
+| title |  | строка поиска |
 | format | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
 
 <a name="module_RDS..University.getFacultiesByTitle"></a>
@@ -471,7 +471,7 @@
 
 | Param | Type | Description |
 | --- | --- | --- |
-| title |  | регулярное выражение для поиска |
+| title |  | строка для поиска |
 | university |  | идентификатор университета |
 | format | <code>boolean</code> | true - длинное(title), false - краткое(shortTitle) |
 

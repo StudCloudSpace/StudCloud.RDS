@@ -309,7 +309,7 @@ University.statics.getUniversities = getUniversities;
  * @this {University}
  * @memberof module:RDS~University
  * @summary Получение университетов по названию
- * @param title - регулярное выражение для поиска
+ * @param title - строка поиска
  * @param {boolean} format - true - длинное(title), false - краткое(shortTitle)
  * @returns {Promise}
  * @fulfill - Массив для выдачи
@@ -318,6 +318,7 @@ University.statics.getUniversities = getUniversities;
  */
 function getUniversitiesByTitle(title, format){
 
+	let regex = new RegExp("^" + title, 'ig');
 
 	let promise = this.aggregate([
 		{
@@ -330,10 +331,10 @@ function getUniversitiesByTitle(title, format){
 			$match: {
 				$or:[
 					{
-						title: {$regex: title}
+						title: regex
 					},
 					{
-						shortTitle: {$regex: title}
+						shortTitle: regex
 					}
 				]
 
@@ -368,7 +369,7 @@ University.statics.getUniversitiesByTitle = getUniversitiesByTitle;
  * @this {University}
  * @memberof module:RDS~University
  * @summary Получение университетов по названию
- * @param title - регулярное выражение для поиска
+ * @param title - строка для поиска
  * @param university - идентификатор университета
  * @param {boolean} format - true - длинное(title), false - краткое(shortTitle)
  * @returns {Promise}
@@ -377,30 +378,46 @@ University.statics.getUniversitiesByTitle = getUniversitiesByTitle;
  * @reject {DbError}, 500 - ошибка базы данных.
  */
 function getFacultiesByTitle(title, university, format){
-
+	let regex = new RegExp("^" + title, 'ig');
 	let query = [
 		{
 			$match: {
-				_id: mongoose.Types.ObjectId(university),
-				"faculties.title": {$regex: title}
+				_id: mongoose.Types.ObjectId(university)
+			}
+		},
+		{
+			$unwind: "$faculties"
+		},
+		{
+			$match: {
+				$or:[
+					{
+						"faculties.title": regex
+					},
+					{
+						"faculties.shortTitle": regex
+					}
+				]
 			}
 		},
 		{
 			$limit: 10
 		},
 		{
-			$sort: {}
+			$sort:{}
 		},
 		{
-			$project: {
-				faculties: "$faculties"
+			$group:{
+				"_id": "$_id",
+				faculties: {'$push': '$faculties'}
 			}
-		}];
+		}
+	];
 
 	if (format) {
-		query[2]['$sort'].shortTitle = 1;
+		query[4]['$sort'].shortTitle = 1;
 	} else {
-		query[2]['$sort'].title = 1;
+		query[4]['$sort'].title = 1;
 	}
 
 	let promise = this.aggregate(query).exec();
@@ -418,6 +435,7 @@ function getFacultiesByTitle(title, university, format){
 			}
 		})
 		.catch(function (err) {
+			throw err;
 			if(err instanceof DbError){
 				throw err;
 			}else{
@@ -533,6 +551,7 @@ function* createNew(title, shortTitle, street, building, city, rating){
 					building: building,
 					city: city
 				},
+				faculties: [],
 				rating: rating
 			});
 			university = yield* university.saveUniversity();
@@ -591,7 +610,7 @@ function* saveUniversity (){
 			break;
 		}catch(err){
 			errCounter--;
-			logger.error(new DbError(err, 500, 'Ошибка при сохранении университета, колличество ошибок - %d', 5 - errCounter));
+			logger.error(new DbError(err, 500, Util.format('Ошибка при сохранении университета, колличество ошибок - %d', 5 - errCounter)));
 			if(errCounter == 0) throw err;
 		}
 	}
