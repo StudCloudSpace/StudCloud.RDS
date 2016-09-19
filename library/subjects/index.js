@@ -161,10 +161,11 @@ function getEnabled(query, skip){
 	let Subject = this;
 	let deffer = Q.defer();
 	let promise;
+	let regex = new RegExp("^" + query, 'ig');
 	if(query){
 		promise = Subject.find(
 			{
-				title: {$regex: query},
+				title: regex,
 				enabled: true
 			}).skip(skip * perPage).exec();
 	}else{
@@ -207,10 +208,12 @@ function getAll(query, skip){
 	let Subject = this;
 	let deffer = Q.defer();
 	let promise;
+	let regex = new RegExp("^" + query, 'ig');
+
 	if(query && query.length != 0){
 		promise = Subject.find(
 			{
-				title: {$regex: query}
+				title: regex
 			}).skip(skip * perPage).exec();
 	}else{
 		promise = Subject.find(
@@ -249,10 +252,12 @@ function getDisabled(query, skip){
 	let Subject = this;
 	let deffer = Q.defer();
 	let promise;
+	let regex = new RegExp("^" + query, 'ig');
+
 	if(query){
 		promise = Subject.find(
 			{
-				title: {$regex: query},
+				title: regex,
 				enabled: false
 			}).skip(skip * perPage).exec();
 	}else{

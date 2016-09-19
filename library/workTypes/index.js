@@ -242,10 +242,12 @@ WorkType.statics.getById = getById;
 function getEnabled(query, skip){
 	let WorkType = this;
 	let promise;
+	let regex = new RegExp("^" + query, 'ig');
+
 	if(query){
 		promise = WorkType.find(
 			{
-				title: {$regex: query},
+				title: regex,
 				enabled: true
 			}).skip(skip * perPage).exec();
 	}else{
@@ -288,10 +290,12 @@ WorkType.statics.getEnabled = getEnabled;
 function getAll(query, skip){
 	let WorkType = this;
 	let promise;
+
 	if(query){
+		let regex = new RegExp("^" + query, 'ig');
 		promise = WorkType.find(
 			{
-				title: {$regex: query}
+				title: regex
 			}).skip(skip * perPage).exec();
 	}else{
 		promise = WorkType.find(
@@ -331,9 +335,10 @@ function getDisabled(query, skip){
 	let WorkType = this;
 	let promise;
 	if(query){
+		let regex = new RegExp("^" + query, 'ig');
 		promise = WorkType.find(
 			{
-				title: {$regex: query},
+				title: regex,
 				enabled: false
 			}).skip(skip * perPage).exec();
 	}else{
@@ -359,6 +364,7 @@ function getDisabled(query, skip){
 	});
 
 };
+
 WorkType.statics.getDisabled = getDisabled;
 
 
